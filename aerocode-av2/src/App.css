@@ -1,0 +1,16 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f0f2f5;
+}
+
+/* **A SOLUÇÃO CRÍTICA PARA A SOBREPOSIÇÃO:** */
+.main-content {
+    /* **Importante:** Este valor (250px) DEVE ser igual à largura da sua SideBar */
+    margin-left: 250px; 
+    
+    padding: 20px; /* Adiciona espaçamento interno para o conteúdo */
+    min-height: 100vh; /* Garante que o conteúdo ocupe a altura total */
+    box-sizing: border-box; 
+    overflow-x: hidden; /* Previne rolagem horizontal indesejada */
+}

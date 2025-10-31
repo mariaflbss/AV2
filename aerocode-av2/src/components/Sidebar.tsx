@@ -1,22 +1,70 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import "../Sidebar.css";
 
-export const Sidebar: React.FC = () => {
+interface MenuItem {
+  label: string;
+  path: string;
+  key: string;
+  icon: string; 
+}
+
+const menuItems: MenuItem[] = [
+  { label: "Dashboard", path: "/dashboard", key: "dashboard", icon: "/imgDashboard.png" },
+  { label: "Gerenciar Aeronaves", path: "/aeronaves", key: "aeronaves", icon: "/imgAeronaves.png" },
+  { label: "Gerenciar Funcionários", path: "/funcionarios", key: "funcionarios", icon: "/imgFuncionarios.png" },
+  { label: "Gerenciar Peças", path: "/pecas", key: "pecas", icon: "/imgPecas.png" },
+  { label: "Gerenciar Testes", path: "/testes", key: "testes", icon: "/imgTestes.png" },
+  { label: "Relatórios", path: "/relatorios", key: "relatorios", icon: "/imgRelatorio.png" },
+];
+
+
+const SideBar: React.FC = () => {
+  const [active, setActive] = useState("aeronaves");
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const path = location.pathname;
+    const current = menuItems.find((item) => path.includes(item.key));
+    if (current) setActive(current.key);
+  }, [location]);
+
+  const handleNavigation = (path: string, key: string) => {
+    setActive(key);
+    navigate(path);
+  };
+
   return (
-    <nav className="sidebar">
-      <h2 className="sidebar-title">Menu</h2>
-      <ul className="sidebar-menu">
-        <li><Link to="/">Dashboard</Link></li>
-        <li><Link to="/aeronaves">Gerenciamento de Aeronaves</Link></li>
-        <li><Link to="/funcionarios">Gerenciamento de Funcionários</Link></li>
-        <li><Link to="/pecas">Gerenciamento de Peças</Link></li>
-        <li><Link to="/relatorios">Relatórios</Link></li>
-        <li><Link to="/testes">Testes</Link></li>
-        <li><Link to="/login">Sair</Link></li>
-      </ul>
-    </nav>
+    <aside className="sidebar">
+      <div className="perfil">
+        <img src="/imgUsuario.png" alt="Perfil" className="perfil-img" />
+        <div className="perfil-info">
+          <h3>Usuário</h3>
+          <p>Administrador</p>
+        </div>
+        <img
+          src="/imgSair.png"
+          alt="Sair"
+          className="logout-icon"
+          onClick={() => navigate("/")}
+        />
+      </div>
+
+      <nav className="menu">
+        {menuItems.map((item) => (
+          <button
+            key={item.key}
+            className={`menu-item ${active === item.key ? "active" : ""}`}
+            onClick={() => handleNavigation(item.path, item.key)}
+          >
+            <img src={item.icon} alt={item.label} className="menu-icon" />
+            <span className="menu-label">{item.label}</span>
+          </button>
+        ))}
+      </nav>
+    </aside>
   );
 };
 
-export default Sidebar;
+export default SideBar;
