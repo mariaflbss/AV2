@@ -213,6 +213,7 @@ const EtapasProducao: React.FC = () => {
           </button>
         </div>
 
+        <div className="etapas-container">
         {aeronavesFiltradas.map((aeronave) => (
           <div key={aeronave.codigo} className="aeronave-card">
             <div className="etapas-grid">
@@ -250,6 +251,7 @@ const EtapasProducao: React.FC = () => {
             </div>
           </div>
         ))}
+        </div>
 
         {etapaSelecionada && (
           <div className="modal">

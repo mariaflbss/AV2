@@ -5,6 +5,7 @@
 .etapas-main {
   flex: 1;
   padding: 2rem;
+  box-sizing: border-box;
 }
 
 .etapas-actions {
@@ -19,11 +20,21 @@
   font-size: 1rem;
 }
 
-.aeronave-card {
+.etapas-container {
+  display: flex;
+  flex-wrap: wrap;   
+  gap: 1rem;  
+  align-items: flex-start;
+}
+
+.etapas-card {
+  flex: 0 1 200px;
+  max-width: 300px;
   border: 1px solid #ccc;
   border-radius: 6px;
   padding: 1rem;
-  margin-bottom: 1rem;
+  background-color: #fff;
+  box-sizing: border-box;
 }
 
 .btn.associar{
