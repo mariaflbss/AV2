@@ -14,7 +14,24 @@ interface Etapa {
 interface Aeronave {
   codigo: string;
   nome: string;
-  etapas: Etapa[];
+  modelo: string;
+  tipo: string;
+  capacidade: number;
+  alcance: number;
+  cliente: string;
+  dataEntrega: string;
+  imagem: string;
+  etapas?: Etapa[];
+}
+
+interface Funcionario {
+  id: string;
+  nome: string;
+  telefone: string;
+  endereco: string;
+  usuario: string;
+  senha: string;
+  permissao: string;
 }
 
 const EtapasProducao: React.FC = () => {
@@ -22,77 +39,129 @@ const EtapasProducao: React.FC = () => {
     {
       codigo: "1234",
       nome: "Aeronave MC 21 300",
+      modelo: "MC21-300",
+      tipo: "Militar",
+      capacidade: 50,
+      alcance: 3000,
+      cliente: "Cliente A",
+      dataEntrega: "11/11/2025",
+      imagem: "aeronave1.jpg",
       etapas: [
-        { nome: "Etapa 1", prazo: "2025-11-11", ordem: 1, status: "pendente", funcionarios: [] },
+        {
+          nome: "Etapa 1",
+          prazo: "11/11/2025",
+          ordem: 1,
+          status: "pendente",
+          funcionarios: [],
+        },
       ],
     },
     {
       codigo: "5678",
       nome: "Aeronave AIRBUS A320",
+      modelo: "A320",
+      tipo: "Comercial",
+      capacidade: 180,
+      alcance: 5000,
+      cliente: "Cliente B",
+      dataEntrega: "20/12/2025",
+      imagem: "aeronave2.jpg",
       etapas: [],
     },
   ]);
 
+  const [funcionarios] = useState<Funcionario[]>([
+    { id: "1", nome: "Maria Fernanda", telefone: "123", endereco: "Rua A", usuario: "maria_admin", senha: "123456", permissao: "1" },
+    { id: "2", nome: "Heloisa Cardillo", telefone: "456", endereco: "Rua B", usuario: "heloisa_eng", senha: "789100", permissao: "2" },
+    { id: "3", nome: "Laura Félix", telefone: "789", endereco: "Rua C", usuario: "laura_op", senha: "246810", permissao: "3" },
+  ]);
+
   const [pesquisa, setPesquisa] = useState("");
   const [etapaSelecionada, setEtapaSelecionada] = useState<Etapa | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalEtapaOpen, setIsModalEtapaOpen] = useState(false);
+  const [isModalAssocOpen, setIsModalAssocOpen] = useState(false);
+  const [aeronaveSelecionada, setAeronaveSelecionada] = useState<string>("");
+  const [etapaAssoc, setEtapaAssoc] = useState<string>("");
+  const [funcionarioAssoc, setFuncionarioAssoc] = useState<string>("");
 
-  // Filtra aeronaves pelo nome ou código
-  const aeronavesFiltradas = aeronaves.filter((a) =>
-    a.nome.toLowerCase().includes(pesquisa.toLowerCase()) || a.codigo.includes(pesquisa)
+  const aeronavesFiltradas = aeronaves.filter(
+    (a) =>
+      a.nome.toLowerCase().includes(pesquisa.toLowerCase()) ||
+      a.codigo.includes(pesquisa)
   );
 
-  // Cadastrar nova etapa
   const handleCadastrarEtapa = (etapa: Etapa, codigoAeronave: string) => {
     setAeronaves((prev) =>
       prev.map((a) =>
         a.codigo === codigoAeronave
-          ? { ...a, etapas: [...a.etapas, etapa] }
+          ? { ...a, etapas: [...(a.etapas || []), etapa] }
           : a
       )
     );
   };
 
-  // Iniciar etapa
-  const handleIniciarEtapa = (codigoAeronave: string, nomeEtapa: string) => {
+  const handleIniciarEtapa = (aeronaveCodigo: string, etapaNome: string) => {
     setAeronaves((prev) =>
-      prev.map((a) => {
-        if (a.codigo !== codigoAeronave) return a;
-
-        const etapasAtualizadas = a.etapas.map((etapa) => {
-          if (etapa.nome !== nomeEtapa) return etapa;
-          if (etapa.status === "pendente") {
-            return { ...etapa, status: "em andamento" };
-          } else {
-            window.alert(`A etapa "${etapa.nome}" não pode ser iniciada.`);
-            return etapa;
-          }
-        });
-
-        return { ...a, etapas: etapasAtualizadas };
-      })
+      prev.map((a) =>
+        a.codigo === aeronaveCodigo
+          ? {
+              ...a,
+              etapas: (a.etapas || []).map((e) =>
+                e.nome === etapaNome && e.status === "pendente"
+                  ? { ...e, status: "em andamento" }
+                  : e
+              ),
+            }
+          : a
+      )
     );
   };
 
-  // Finalizar etapa
-  const handleFinalizarEtapa = (codigoAeronave: string, nomeEtapa: string) => {
+  const handleFinalizarEtapa = (aeronaveCodigo: string, etapaNome: string) => {
     setAeronaves((prev) =>
-      prev.map((a) => {
-        if (a.codigo !== codigoAeronave) return a;
-
-        const etapasAtualizadas = a.etapas.map((etapa) => {
-          if (etapa.nome !== nomeEtapa) return etapa;
-          if (etapa.status === "em andamento") {
-            return { ...etapa, status: "finalizada" };
-          } else {
-            window.alert(`A etapa "${etapa.nome}" não pode ser finalizada.`);
-            return etapa;
-          }
-        });
-
-        return { ...a, etapas: etapasAtualizadas };
-      })
+      prev.map((a) =>
+        a.codigo === aeronaveCodigo
+          ? {
+              ...a,
+              etapas: (a.etapas || []).map((e) =>
+                e.nome === etapaNome && e.status === "em andamento"
+                  ? { ...e, status: "finalizada" }
+                  : e
+              ),
+            }
+          : a
+      )
     );
+  };
+
+  const handleAssociarFuncionario = () => {
+    if (!aeronaveSelecionada || !etapaAssoc || !funcionarioAssoc)
+      return alert("Preencha todos os campos.");
+
+    setAeronaves((prev) =>
+      prev.map((a) =>
+        a.codigo === aeronaveSelecionada
+          ? {
+              ...a,
+              etapas: (a.etapas || []).map((e) =>
+                e.nome === etapaAssoc
+                  ? {
+                      ...e,
+                      funcionarios: e.funcionarios.includes(funcionarioAssoc)
+                        ? e.funcionarios
+                        : [...e.funcionarios, funcionarioAssoc],
+                    }
+                  : e
+              ),
+            }
+          : a
+      )
+    );
+
+    setAeronaveSelecionada("");
+    setEtapaAssoc("");
+    setFuncionarioAssoc("");
+    setIsModalAssocOpen(false);
   };
 
   return (
@@ -110,66 +179,47 @@ const EtapasProducao: React.FC = () => {
             value={pesquisa}
             onChange={(e) => setPesquisa(e.target.value)}
           />
-          <button className="btn cadastrar" onClick={() => setIsModalOpen(true)}>
+          <button className="btn cadastrar" onClick={() => setIsModalEtapaOpen(true)}>
             Cadastrar Etapa
+          </button>
+          <button className="btn associar" onClick={() => setIsModalAssocOpen(true)}>
+            Associar Funcionário
           </button>
         </div>
 
-        <div className="etapas-list">
-          {aeronavesFiltradas.length > 0 ? (
-            aeronavesFiltradas.map((aeronave) => (
-              <div key={aeronave.codigo} className="aeronave-card">
-                <h3 className="aeronave-nome">
-                  {aeronave.nome} ({aeronave.codigo})
-                </h3>
-
-                {aeronave.etapas.length > 0 ? (
-                  <ul>
-                    {aeronave.etapas.map((etapa, idx) => (
-                      <li
-                        key={idx}
-                        className={`etapa-item status-${etapa.status}`}
-                        onClick={() => setEtapaSelecionada(etapa)}
+        {aeronavesFiltradas.map((aeronave) => (
+          <div key={aeronave.codigo} className="aeronave-card">
+            <div className="etapas-grid">
+              {(aeronave.etapas || []).length > 0 ? (
+                aeronave.etapas!.map((etapa) => (
+                  <div key={etapa.nome} className="etapa-card">
+                    <div className="etapa-info" onClick={() => setEtapaSelecionada(etapa)}>
+                      <h3>{etapa.nome}</h3>
+                      <p className={`status ${etapa.status}`}>{etapa.status}</p>
+                    </div>
+                    <div className="etapa-buttons">
+                      <button
+                        onClick={() => handleIniciarEtapa(aeronave.codigo, etapa.nome)}
+                        disabled={etapa.status !== "pendente"}
                       >
-                        {etapa.ordem}. {etapa.nome} | Prazo:{" "}
-                        {new Date(etapa.prazo).toLocaleDateString()} |{" "}
-                        <strong>{etapa.status}</strong>
-                        <div className="etapa-buttons">
-                          <button
-                            className="btn iniciar"
-                            disabled={etapa.status !== "pendente"}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleIniciarEtapa(aeronave.codigo, etapa.nome);
-                            }}
-                          >
-                            Iniciar
-                          </button>
-                          <button
-                            className="btn finalizar"
-                            disabled={etapa.status !== "em andamento"}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleFinalizarEtapa(aeronave.codigo, etapa.nome);
-                            }}
-                          >
-                            Finalizar
-                          </button>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p>Nenhuma etapa cadastrada</p>
-                )}
-              </div>
-            ))
-          ) : (
-            <p className="sem-resultados">Nenhuma aeronave encontrada</p>
-          )}
-        </div>
+                        Iniciar
+                      </button>
+                      <button
+                        onClick={() => handleFinalizarEtapa(aeronave.codigo, etapa.nome)}
+                        disabled={etapa.status !== "em andamento"}
+                      >
+                        Finalizar
+                      </button>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p>Nenhuma etapa cadastrada</p>
+              )}
+            </div>
+          </div>
+        ))}
 
-        {/* Modal de detalhes da etapa */}
         {etapaSelecionada && (
           <div className="modal">
             <div className="modal-content">
@@ -177,21 +227,89 @@ const EtapasProducao: React.FC = () => {
                 &times;
               </span>
               <h2>{etapaSelecionada.nome}</h2>
-              <p><strong>Prazo:</strong> {new Date(etapaSelecionada.prazo).toLocaleDateString()}</p>
+              <p><strong>Prazo:</strong> {etapaSelecionada.prazo}</p>
               <p><strong>Ordem:</strong> {etapaSelecionada.ordem}</p>
               <p><strong>Status:</strong> {etapaSelecionada.status}</p>
-              <p><strong>Funcionários:</strong> {etapaSelecionada.funcionarios.join(", ") || "Nenhum"}</p>
+              <p>
+                <strong>Funcionários:</strong>{" "}
+                {etapaSelecionada.funcionarios.length > 0
+                  ? etapaSelecionada.funcionarios.join(", ")
+                  : "Nenhum"}
+              </p>
             </div>
           </div>
         )}
 
-        {/* Modal de cadastro */}
         <CadastrarEtapa
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
+          isOpen={isModalEtapaOpen}
+          onClose={() => setIsModalEtapaOpen(false)}
           onCadastrar={handleCadastrarEtapa}
           aeronaves={aeronaves}
         />
+
+        {isModalAssocOpen && (
+          <div className="modal">
+            <div className="modal-content">
+              <span className="close" onClick={() => setIsModalAssocOpen(false)}>
+                &times;
+              </span>
+              <h2>Associar Funcionário a Etapa</h2>
+
+              <label>
+                Aeronave:
+                <select
+                  value={aeronaveSelecionada}
+                  onChange={(e) => setAeronaveSelecionada(e.target.value)}
+                >
+                  <option value="">Selecione</option>
+                  {aeronaves.map((a) => (
+                    <option key={a.codigo} value={a.codigo}>
+                      {a.nome} ({a.codigo})
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              {aeronaveSelecionada && (
+                <label>
+                  Etapa:
+                  <select
+                    value={etapaAssoc}
+                    onChange={(e) => setEtapaAssoc(e.target.value)}
+                  >
+                    <option value="">Selecione</option>
+                    {aeronaves
+                      .find((a) => a.codigo === aeronaveSelecionada)
+                      ?.etapas?.map((et) => (
+                        <option key={et.nome} value={et.nome}>
+                          {et.nome}
+                        </option>
+                      ))}
+                  </select>
+                </label>
+              )}
+
+              <label>
+                Funcionário:
+                <select
+                  value={funcionarioAssoc}
+                  onChange={(e) => setFuncionarioAssoc(e.target.value)}
+                >
+                  <option value="">Selecione</option>
+                  {funcionarios.map((f) => (
+                    <option key={f.id} value={f.nome}>
+                      {f.nome}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <button className="btn cadastrar" onClick={handleAssociarFuncionario}>
+                Associar
+              </button>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );

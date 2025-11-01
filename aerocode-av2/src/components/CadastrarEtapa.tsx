@@ -11,7 +11,7 @@ interface Etapa {
 interface Aeronave {
   codigo: string;
   nome: string;
-  etapas: Etapa[];
+  etapas?: Etapa[];
 }
 
 interface Props {
@@ -26,27 +26,15 @@ const CadastrarEtapa: React.FC<Props> = ({ isOpen, onClose, onCadastrar, aeronav
   const [prazo, setPrazo] = useState("");
   const [ordem, setOrdem] = useState(1);
   const [codigoAeronave, setCodigoAeronave] = useState(aeronaves[0]?.codigo || "");
-  const [erro, setErro] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setErro("");
+    if (!nome || !prazo || !codigoAeronave) return alert("Preencha todos os campos");
 
-    if (!nome || !prazo || !codigoAeronave) {
-      setErro("Preencha todos os campos!");
-      return;
-    }
-
-    onCadastrar(
-      { nome, prazo, ordem, status: "pendente", funcionarios: [] },
-      codigoAeronave
-    );
-
-    // Limpa os campos
+    onCadastrar({ nome, prazo, ordem, status: "pendente", funcionarios: [] }, codigoAeronave);
     setNome("");
     setPrazo("");
     setOrdem(1);
-    setCodigoAeronave(aeronaves[0]?.codigo || "");
     onClose();
   };
 
@@ -59,39 +47,11 @@ const CadastrarEtapa: React.FC<Props> = ({ isOpen, onClose, onCadastrar, aeronav
           &times;
         </span>
         <h2>Cadastrar Etapa</h2>
+
         <form onSubmit={handleSubmit}>
           <label>
-            Nome da Etapa:
-            <input
-              type="text"
-              value={nome}
-              onChange={(e) => setNome(e.target.value)}
-              placeholder="Ex: Montagem das asas"
-            />
-          </label>
-          <label>
-            Prazo:
-            <input
-              type="date"
-              value={prazo}
-              onChange={(e) => setPrazo(e.target.value)}
-            />
-          </label>
-          <label>
-            Ordem da Etapa:
-            <input
-              type="number"
-              min={1}
-              value={ordem}
-              onChange={(e) => setOrdem(Number(e.target.value))}
-            />
-          </label>
-          <label>
             Aeronave:
-            <select
-              value={codigoAeronave}
-              onChange={(e) => setCodigoAeronave(e.target.value)}
-            >
+            <select value={codigoAeronave} onChange={(e) => setCodigoAeronave(e.target.value)}>
               {aeronaves.map((a) => (
                 <option key={a.codigo} value={a.codigo}>
                   {a.codigo} - {a.nome}
@@ -99,7 +59,27 @@ const CadastrarEtapa: React.FC<Props> = ({ isOpen, onClose, onCadastrar, aeronav
               ))}
             </select>
           </label>
-          {erro && <p className="erro">{erro}</p>}
+
+          <label>
+            Nome da Etapa:
+            <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} />
+          </label>
+
+          <label>
+            Prazo:
+            <input type="date" value={prazo} onChange={(e) => setPrazo(e.target.value)} />
+          </label>
+
+          <label>
+            Ordem:
+            <input
+              type="number"
+              min={1}
+              value={ordem}
+              onChange={(e) => setOrdem(Number(e.target.value))}
+            />
+          </label>
+
           <button type="submit" className="btn cadastrar">
             Cadastrar
           </button>
