@@ -19,7 +19,6 @@
   font-size: 1rem;
 }
 
-
 .aeronave-card {
   border: 1px solid #ccc;
   border-radius: 6px;
@@ -27,8 +26,9 @@
   margin-bottom: 1rem;
 }
 
-.aeronave-nome {
-  font-weight: bold;
+.btn.associar{
+  background-color: #707070;
+  color: white;
 }
 
 .modal {

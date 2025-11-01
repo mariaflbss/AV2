@@ -34,6 +34,8 @@ interface Funcionario {
   permissao: string;
 }
 
+type EtapaSelecionada = Etapa & { aeronaveNome?: string };
+
 const EtapasProducao: React.FC = () => {
   const [aeronaves, setAeronaves] = useState<Aeronave[]>([
     {
@@ -71,13 +73,37 @@ const EtapasProducao: React.FC = () => {
   ]);
 
   const [funcionarios] = useState<Funcionario[]>([
-    { id: "1", nome: "Maria Fernanda", telefone: "123", endereco: "Rua A", usuario: "maria_admin", senha: "123456", permissao: "1" },
-    { id: "2", nome: "Heloisa Cardillo", telefone: "456", endereco: "Rua B", usuario: "heloisa_eng", senha: "789100", permissao: "2" },
-    { id: "3", nome: "Laura Félix", telefone: "789", endereco: "Rua C", usuario: "laura_op", senha: "246810", permissao: "3" },
+    {
+      id: "1",
+      nome: "Maria Fernanda",
+      telefone: "123",
+      endereco: "Rua A",
+      usuario: "maria_admin",
+      senha: "123456",
+      permissao: "1",
+    },
+    {
+      id: "2",
+      nome: "Heloisa Cardillo",
+      telefone: "456",
+      endereco: "Rua B",
+      usuario: "heloisa_eng",
+      senha: "789100",
+      permissao: "2",
+    },
+    {
+      id: "3",
+      nome: "Laura Félix",
+      telefone: "789",
+      endereco: "Rua C",
+      usuario: "laura_op",
+      senha: "246810",
+      permissao: "3",
+    },
   ]);
 
   const [pesquisa, setPesquisa] = useState("");
-  const [etapaSelecionada, setEtapaSelecionada] = useState<Etapa | null>(null);
+  const [etapaSelecionada, setEtapaSelecionada] = useState<EtapaSelecionada | null>(null);
   const [isModalEtapaOpen, setIsModalEtapaOpen] = useState(false);
   const [isModalAssocOpen, setIsModalAssocOpen] = useState(false);
   const [aeronaveSelecionada, setAeronaveSelecionada] = useState<string>("");
@@ -193,7 +219,12 @@ const EtapasProducao: React.FC = () => {
               {(aeronave.etapas || []).length > 0 ? (
                 aeronave.etapas!.map((etapa) => (
                   <div key={etapa.nome} className="etapa-card">
-                    <div className="etapa-info" onClick={() => setEtapaSelecionada(etapa)}>
+                    <div
+                      className="etapa-info"
+                      onClick={() =>
+                        setEtapaSelecionada({ ...etapa, aeronaveNome: aeronave.nome })
+                      }
+                    >
                       <h3>{etapa.nome}</h3>
                       <p className={`status ${etapa.status}`}>{etapa.status}</p>
                     </div>
@@ -227,9 +258,18 @@ const EtapasProducao: React.FC = () => {
                 &times;
               </span>
               <h2>{etapaSelecionada.nome}</h2>
-              <p><strong>Prazo:</strong> {etapaSelecionada.prazo}</p>
-              <p><strong>Ordem:</strong> {etapaSelecionada.ordem}</p>
-              <p><strong>Status:</strong> {etapaSelecionada.status}</p>
+              <p>
+                <strong>Aeronave:</strong> {etapaSelecionada.aeronaveNome}
+              </p>
+              <p>
+                <strong>Prazo:</strong> {etapaSelecionada.prazo}
+              </p>
+              <p>
+                <strong>Ordem:</strong> {etapaSelecionada.ordem}
+              </p>
+              <p>
+                <strong>Status:</strong> {etapaSelecionada.status}
+              </p>
               <p>
                 <strong>Funcionários:</strong>{" "}
                 {etapaSelecionada.funcionarios.length > 0

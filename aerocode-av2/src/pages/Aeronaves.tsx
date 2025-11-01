@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import CadastrarAeronave from "../components/CadastrarAeronave"; 
 import "../Aeronaves.css";
@@ -64,6 +65,13 @@ const Aeronaves: React.FC = () => {
     setAeronaves([...aeronaves, novaAeronave]);
   };
 
+  const navigate = useNavigate();
+
+  const irParaEtapas = () => {
+    navigate("/etapas");
+  };
+
+
   return (
     <div className="aeronaves-container">
       <Sidebar />
@@ -85,7 +93,7 @@ const Aeronaves: React.FC = () => {
           >
             Cadastrar Aeronave
           </button>
-          <button className="btn etapas">Etapas de Produção</button>
+          <button className="btn etapas" onClick={irParaEtapas}>Etapas de Produção</button>
         </div>
 
         <div className="aeronaves-list">
