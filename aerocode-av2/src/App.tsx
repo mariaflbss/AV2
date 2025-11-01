@@ -6,7 +6,7 @@ import Aeronaves from "./pages/Aeronaves";
 import Funcionarios from "./pages/Funcionarios";
 import Pecas from "./pages/Pecas";
 import Testes from "./pages/Testes";
-import GerenciarEtapas from "./pages/GerenciarEtapas";
+import Etapas from "./pages/Etapas";
 
 function App() {
   return (
@@ -19,7 +19,7 @@ function App() {
         <Route path="/funcionarios" element={<Funcionarios />}/>
         <Route path="/pecas" element={<Pecas />}/>
         <Route path="/testes" element={<Testes />}/>
-        <Route path="/etapas" element={<GerenciarEtapas/>} />
+        <Route path="/etapas" element={<Etapas />}/>
       </Routes>
     </Router>
   );
