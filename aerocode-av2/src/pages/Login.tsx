@@ -4,17 +4,17 @@ import "../Login.css";
 
 const PaginaLogin: React.FC = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
+  const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (email === "admin@aerocode.com" && password === "123456") {
+    if (user === "admin_aerocode" && password === "123456") {
       alert("Login realizado com sucesso!");
       navigate("/dashboard");
     } else {
-      alert("E-mail ou senha inválidas");
+      alert("Nome de usuário ou senha inválidos");
     }
   };
 
@@ -22,14 +22,14 @@ const PaginaLogin: React.FC = () => {
     <div className="login-container">
       <div className="login-box">
         <h2>Entre</h2>
-        <h4> Insira seu e-mail e senha</h4>
+        <h4> Insira seu nome de usuário e senha</h4>
 
         <form onSubmit={handleSubmit}>
           <input
-            type="email"
-            placeholder="E-mail"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="user"
+            placeholder="Nome de usuário"
+            value={user}
+            onChange={(e) => setUser(e.target.value)}
             required
           />
           <input
