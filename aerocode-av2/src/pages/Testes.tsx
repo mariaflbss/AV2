@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Sidebar from "../components/Sidebar";
 import CadastrarTeste from "../components/CadastrarTestes";
-import "../Funcionarios.css"; // pode renomear depois para "Testes.css"
+import "../Funcionarios.css"; 
 
 interface Teste {
   id: string;
@@ -88,7 +88,6 @@ const Testes: React.FC = () => {
           )}
         </div>
 
-        {/* Modal de visualização do teste */}
         {selecionado && (
           <div className="modal">
             <div className="modal-content">

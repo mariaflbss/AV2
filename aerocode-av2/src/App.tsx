@@ -7,6 +7,7 @@ import Funcionarios from "./pages/Funcionarios";
 import Pecas from "./pages/Pecas";
 import Testes from "./pages/Testes";
 import Etapas from "./pages/Etapas";
+import Relatorios from "./pages/Relatorios";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/pecas" element={<Pecas />}/>
         <Route path="/testes" element={<Testes />}/>
         <Route path="/etapas" element={<Etapas />}/>
+        <Route path="/relatorios" element={<Relatorios />}/>
       </Routes>
     </Router>
   );
