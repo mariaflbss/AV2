@@ -18,7 +18,7 @@ const CadastrarFuncionario: React.FC<CadastrarFuncionarioProps> = ({
   const [endereco, setEndereco] = useState("");
   const [usuario, setUsuario] = useState("");
   const [senha, setSenha] = useState("");
-  const [permissao, setPermissao] = useState("3");
+  const [permissao, setPermissao] = useState("");
 
   if (!isOpen) return null;
 
@@ -47,7 +47,7 @@ const CadastrarFuncionario: React.FC<CadastrarFuncionarioProps> = ({
     setEndereco("");
     setUsuario("");
     setSenha("");
-    setPermissao("3");
+    setPermissao("");
   };
 
   return (
@@ -96,6 +96,7 @@ const CadastrarFuncionario: React.FC<CadastrarFuncionarioProps> = ({
             onChange={(e) => setSenha(e.target.value)}
           />
           <select value={permissao} onChange={(e) => setPermissao(e.target.value)}>
+            <option value="" disabled>Selecione o nível de permissão</option>  
             <option value="1">Administrador</option>
             <option value="2">Engenheiro</option>
             <option value="3">Operador</option>

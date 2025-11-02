@@ -303,7 +303,7 @@ const EtapasProducao: React.FC = () => {
                   value={aeronaveSelecionada}
                   onChange={(e) => setAeronaveSelecionada(e.target.value)}
                 >
-                  <option value="">Selecione</option>
+                  <option value="">Selecione a Aeronave</option>
                   {aeronaves.map((a) => (
                     <option key={a.codigo} value={a.codigo}>
                       {a.nome} ({a.codigo})
@@ -337,7 +337,7 @@ const EtapasProducao: React.FC = () => {
                   value={funcionarioAssoc}
                   onChange={(e) => setFuncionarioAssoc(e.target.value)}
                 >
-                  <option value="">Selecione</option>
+                  <option value="">Selecione o(a) Funcionário(a)</option>
                   {funcionarios.map((f) => (
                     <option key={f.id} value={f.nome}>
                       {f.nome}

@@ -34,10 +34,10 @@ const Funcionarios: React.FC = () => {
       permissao: "2",
     },
     {
-      id: "2",
+      id: "3",
       nome: "Laura Félix",
       telefone: "13249875601",
-      endereco: "Rua c",
+      endereco: "Rua C",
       usuario: "laura_op",
       senha: "246810",
       permissao: "3",
@@ -47,6 +47,7 @@ const Funcionarios: React.FC = () => {
   const [pesquisa, setPesquisa] = useState("");
   const [selecionado, setSelecionado] = useState<Funcionario | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [funcionarioEditando, setFuncionarioEditando] = useState<Funcionario | null>(null);
 
   const funcionariosFiltrados = funcionarios.filter(
     (f) =>
@@ -69,6 +70,21 @@ const Funcionarios: React.FC = () => {
     setFuncionarios([...funcionarios, novoFuncionario]);
   };
 
+  const handleAtualizar = (funcAtualizado: Funcionario) => {
+    setFuncionarios((prev) =>
+      prev.map((f) => (f.id === funcAtualizado.id ? funcAtualizado : f))
+    );
+    setFuncionarioEditando(null);
+    setIsModalOpen(false);
+  };
+
+  const handleExcluir = (id: string) => {
+    if (window.confirm("Tem certeza que deseja excluir este funcionário?")) {
+      setFuncionarios((prev) => prev.filter((f) => f.id !== id));
+      setSelecionado(null);
+    }
+  };
+
   return (
     <div className="funcionarios-container">
       <Sidebar />
@@ -84,16 +100,22 @@ const Funcionarios: React.FC = () => {
             value={pesquisa}
             onChange={(e) => setPesquisa(e.target.value)}
           />
-          <button className="btn cadastrar" onClick={() => setIsModalOpen(true)}>
+          <button
+            className="btn cadastrar"
+            onClick={() => {
+              setFuncionarioEditando(null);
+              setIsModalOpen(true);
+            }}
+          >
             Cadastrar Funcionário
           </button>
         </div>
 
         <div className="funcionarios-list">
           {funcionariosFiltrados.length > 0 ? (
-            funcionariosFiltrados.map((funcionario, index) => (
+            funcionariosFiltrados.map((funcionario) => (
               <div
-                key={index}
+                key={funcionario.id}
                 className="funcionario-card"
                 onClick={() => setSelecionado(funcionario)}
               >
@@ -125,14 +147,32 @@ const Funcionarios: React.FC = () => {
                   ? "Engenheiro"
                   : "Operador"}
               </p>
+              <div style={{ marginTop: "20px" }}>
+                <button className="btn editar" onClick={() => {
+                     setFuncionarioEditando(selecionado);
+                    setIsModalOpen(true);
+                    setSelecionado(null);
+                  }} > Editar </button>
+                <button className="btn excluir" onClick={() => handleExcluir(selecionado.id)}>Excluir</button>
+              </div>
             </div>
           </div>
         )}
 
         <CadastrarFuncionario
           isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          onCadastrar={handleCadastrar}
+          onClose={() => {
+            setIsModalOpen(false);
+            setFuncionarioEditando(null);
+          }}
+          onCadastrar={(func: Funcionario) => {
+            if (funcionarioEditando) {
+              handleAtualizar(func);
+            } else {
+              handleCadastrar(func);
+            }
+          }}
+          funcionarioEditando={funcionarioEditando}
         />
       </main>
     </div>

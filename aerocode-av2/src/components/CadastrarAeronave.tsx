@@ -14,7 +14,7 @@ const CadastrarAeronave: React.FC<CadastrarAeronaveProps> = ({
 }) => {
   const [codigo, setCodigo] = useState("");
   const [modelo, setModelo] = useState("");
-  const [tipo, setTipo] = useState("militar");
+  const [tipo, setTipo] = useState("");
   const [capacidade, setCapacidade] = useState("");
   const [alcance, setAlcance] = useState("");
   const [cliente, setCliente] = useState("");
@@ -80,14 +80,14 @@ const CadastrarAeronave: React.FC<CadastrarAeronaveProps> = ({
         <div className="modal-form">
           <input
             type="text"
-            placeholder="Código*"
+            placeholder="Código"
             value={codigo}
             onChange={(e) => setCodigo(e.target.value)}
             required
           />
           <input
             type="text"
-            placeholder="Modelo*"
+            placeholder="Modelo"
             value={modelo}
             onChange={(e) => setModelo(e.target.value)}
             required
@@ -97,33 +97,34 @@ const CadastrarAeronave: React.FC<CadastrarAeronaveProps> = ({
             onChange={(e) => setTipo(e.target.value)}
             required
           >
+            <option value="" disabled>Selecione o tipo da Aeronave</option>
             <option value="militar">Militar</option>
             <option value="comercial">Comercial</option>
           </select>
           <input
             type="number"
-            placeholder="Capacidade*"
+            placeholder="Capacidade"
             value={capacidade}
             onChange={(e) => setCapacidade(e.target.value)}
             required
           />
           <input
             type="number"
-            placeholder="Alcance (km)*"
+            placeholder="Alcance (km)"
             value={alcance}
             onChange={(e) => setAlcance(e.target.value)}
             required
           />
           <input
             type="text"
-            placeholder="Cliente*"
+            placeholder="Cliente"
             value={cliente}
             onChange={(e) => setCliente(e.target.value)}
             required
           />
           <input
             type="date"
-            placeholder="Data de Entrega*"
+            placeholder="Data de Entrega"
             value={dataEntrega}
             onChange={(e) => setDataEntrega(e.target.value)}
             required

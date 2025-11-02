@@ -41,7 +41,7 @@ const SideBar: React.FC = () => {
         <img src="/imgUsuario.png" alt="Perfil" className="perfil-img" />
         <div className="perfil-info">
           <h3>Usuário</h3>
-          <p>Administrador</p>
+          <p>Cargo</p>
         </div>
         <img
           src="/imgSair.png"

@@ -25,7 +25,7 @@ const CadastrarEtapa: React.FC<Props> = ({ isOpen, onClose, onCadastrar, aeronav
   const [nome, setNome] = useState("");
   const [prazo, setPrazo] = useState("");
   const [ordem, setOrdem] = useState(1);
-  const [codigoAeronave, setCodigoAeronave] = useState(aeronaves[0]?.codigo || "");
+  const [codigoAeronave, setCodigoAeronave] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,6 +52,7 @@ const CadastrarEtapa: React.FC<Props> = ({ isOpen, onClose, onCadastrar, aeronav
           <label>
             Aeronave:
             <select value={codigoAeronave} onChange={(e) => setCodigoAeronave(e.target.value)}>
+              <option value="" disabled>Selecione a Aeronave</option>
               {aeronaves.map((a) => (
                 <option key={a.codigo} value={a.codigo}>
                   {a.codigo} - {a.nome}
