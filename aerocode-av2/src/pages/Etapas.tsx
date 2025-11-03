@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import CadastrarEtapa from "../components/CadastrarEtapa";
 import "../Etapas.css";
@@ -38,6 +39,7 @@ interface Funcionario {
 type EtapaSelecionada = Etapa & { aeronaveNome?: string };
  
 const EtapasProducao: React.FC = () => {
+const navigate = useNavigate();
   const [aeronaves, setAeronaves] = useState<Aeronave[]>([]);
   const [funcionarios] = useState<Funcionario[]>([
     { id: "1", nome: "Maria Fernanda", telefone: "123", endereco: "Rua A", usuario: "maria_admin", senha: "123456", permissao: "1" },
@@ -52,6 +54,7 @@ const EtapasProducao: React.FC = () => {
   const [aeronaveSelecionada, setAeronaveSelecionada] = useState<string>("");
   const [etapaAssoc, setEtapaAssoc] = useState<string>("");
   const [funcionarioAssoc, setFuncionarioAssoc] = useState<string>("");
+
 
   useEffect(() => {
     const salvas = carregarDados<Aeronave[]>("aeronaves");
@@ -135,11 +138,14 @@ const EtapasProducao: React.FC = () => {
     setFuncionarioAssoc("");
     setIsModalAssocOpen(false);
   };
- 
+
   return (
     <div className="etapas-container">
       <Sidebar />
       <main className="etapas-main">
+            <button className="btn voltar" onClick={() =>  navigate("/aeronaves")}>
+              ← Voltar
+            </button>
         <h1>Gerenciamento de Etapas de Produção</h1>
  
         <div className="etapas-actions">
