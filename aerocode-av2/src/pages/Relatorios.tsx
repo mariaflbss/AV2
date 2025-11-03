@@ -186,7 +186,7 @@ Data de emissão: ${dataAtual}
              className="relatorio-card"
              onClick={() => setAeronaveSelecionada(r.aeronave)}>
              <p className="relatorio-titulo">{r.titulo}</p>
-             <p className="relatorio-aeronave">{r.aeronave.nome}</p>
+             <span className="relatorio-aeronave">{r.aeronave.nome}</span>
             </div>
           ))}
         </div>

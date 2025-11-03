@@ -14,7 +14,7 @@ const CadastrarAeronave: React.FC<CadastrarAeronaveProps> = ({
 }) => {
   const [codigo, setCodigo] = useState("");
   const [modelo, setModelo] = useState("");
-  const [tipo, setTipo] = useState("militar");
+  const [tipo, setTipo] = useState("");
   const [capacidade, setCapacidade] = useState("");
   const [alcance, setAlcance] = useState("");
   const [cliente, setCliente] = useState("");
@@ -65,7 +65,7 @@ const CadastrarAeronave: React.FC<CadastrarAeronaveProps> = ({
     onCadastrar(novaAeronave);
     onClose();
     
-    setCodigo(""); setModelo(""); setTipo("militar"); setCapacidade("");
+    setCodigo(""); setModelo(""); setTipo(""); setCapacidade("");
     setAlcance(""); setCliente(""); setDataEntrega(""); setImagem(null); setPreview("");
   };
  
@@ -80,6 +80,7 @@ const CadastrarAeronave: React.FC<CadastrarAeronaveProps> = ({
           <input type="text" placeholder="Código" value={codigo} onChange={(e) => setCodigo(e.target.value)} />
           <input type="text" placeholder="Modelo" value={modelo} onChange={(e) => setModelo(e.target.value)} />
           <select value={tipo} onChange={(e) => setTipo(e.target.value)}>
+            <option value="" disabled>Selecione o tipo de aeronave</option> 
             <option value="militar">Militar</option>
             <option value="comercial">Comercial</option>
           </select>

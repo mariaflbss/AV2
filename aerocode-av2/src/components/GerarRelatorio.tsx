@@ -81,7 +81,7 @@ const GerarRelatorio: React.FC<Props> = ({ aeronaves, adicionarRelatorio }) => {
                 setAeronaveSelecionada(a || null);
               }}
             >
-              <option value="">--Selecione--</option>
+              <option value="">Selecione a Aeronave</option>
               {aeronaves.map(a => (
                 <option key={a.codigo} value={a.codigo}>
                   {a.nome} ({a.codigo})

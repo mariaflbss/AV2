@@ -70,7 +70,6 @@
   color: #666;
 }
 
-/* MODAL DE DETALHES */
 .modal {
   position: fixed;
   top: 0;
@@ -116,3 +115,8 @@
   font-style: italic;
   margin-top: 2rem;
 }
+
+.btn.excluir {
+  margin-left: 10px;
+}
+

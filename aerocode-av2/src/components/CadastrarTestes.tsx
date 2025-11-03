@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../CadastrarFuncionario.css"; // ou criar CadastrarTeste.css separado
+import "../CadastrarFuncionario.css"; 
 
 interface CadastrarTesteProps {
   isOpen: boolean;
@@ -16,8 +16,8 @@ const CadastrarTeste: React.FC<CadastrarTesteProps> = ({
   const [titulo, setTitulo] = useState("");
   const [descricao, setDescricao] = useState("");
   const [data, setData] = useState("");
-  const [tipo, setTipo] = useState<"eletrico" | "hidraulico" | "aerodinamico">("eletrico");
-  const [resultado, setResultado] = useState<"aprovado" | "reprovado">("aprovado");
+  const [tipo, setTipo] = useState<"eletrico" | "hidraulico" | "aerodinamico">("");
+  const [resultado, setResultado] = useState<"aprovado" | "reprovado">("");
 
   if (!isOpen) return null;
 
@@ -39,13 +39,12 @@ const CadastrarTeste: React.FC<CadastrarTesteProps> = ({
     onCadastrar(novoTeste);
     onClose();
 
-    // resetar campos
     setId("");
     setTitulo("");
     setDescricao("");
     setData("");
-    setTipo("eletrico");
-    setResultado("aprovado");
+    setTipo("");
+    setResultado("");
   };
 
   return (
@@ -79,11 +78,13 @@ const CadastrarTeste: React.FC<CadastrarTesteProps> = ({
             onChange={(e) => setData(e.target.value)}
           />
           <select value={tipo} onChange={(e) => setTipo(e.target.value as any)}>
+            <option value="" disabled>Selecione o tipo de teste</option> 
             <option value="eletrico">Elétrico</option>
             <option value="hidraulico">Hidráulico</option>
             <option value="aerodinamico">Aerodinâmico</option>
           </select>
           <select value={resultado} onChange={(e) => setResultado(e.target.value as any)}>
+            <option value="" disabled>Selecione o status do teste</option> 
             <option value="aprovado">Aprovado</option>
             <option value="reprovado">Reprovado</option>
           </select>

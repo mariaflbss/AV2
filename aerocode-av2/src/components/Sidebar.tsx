@@ -26,13 +26,11 @@ const SideBar: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Pega o nível do usuário do localStorage
   useEffect(() => {
     const nivel = localStorage.getItem("nivelUsuario") as NivelUsuario | null;
     setNivelUsuario(nivel ?? null);
   }, []);
 
-  // Atualiza o item ativo
   useEffect(() => {
     const path = location.pathname;
     const current = menuItems.find((item) => path.includes(item.key));
@@ -44,7 +42,6 @@ const SideBar: React.FC = () => {
     navigate(path);
   };
 
-  // Filtra os itens visíveis de acordo com o nível do usuário
   const itensVisiveis = menuItems.filter(item => nivelUsuario ? podeAcessar(nivelUsuario, item.label) : false);
 
   return (

@@ -36,9 +36,9 @@ const CadastrarPeca: React.FC<CadastrarPecaProps> = ({
       setStatus(pecaEditando.status);
     } else {
       setNome("");
-      setTipo("nacional");
+      setTipo("");
       setFornecedor("");
-      setStatus("em producao");
+      setStatus("");
     }
   }, [pecaEditando]);
 
@@ -76,6 +76,7 @@ const CadastrarPeca: React.FC<CadastrarPecaProps> = ({
             disabled={!!pecaEditando}
           />
           <select value={tipo} onChange={(e) => setTipo(e.target.value as any)}>
+            <option value="" disabled>Selecione o tipo de peça</option> 
             <option value="nacional">Nacional</option>
             <option value="importada">Importada</option>
           </select>
@@ -87,6 +88,7 @@ const CadastrarPeca: React.FC<CadastrarPecaProps> = ({
             required
           />
           <select value={status} onChange={(e) => setStatus(e.target.value as any)}>
+            <option value="" disabled>Selecione o status da peça</option> 
             <option value="em producao">Em produção</option>
             <option value="em transporte">Em transporte</option>
             <option value="pronta para uso">Pronta para uso</option>

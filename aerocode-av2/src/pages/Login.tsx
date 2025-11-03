@@ -11,9 +11,7 @@ const PaginaLogin: React.FC = () => {
   e.preventDefault();
 
   if (user === "admin_aerocode" && password === "123456") {
-    // salva o nível do usuário
-    localStorage.setItem("nivelUsuario", "admin");
-
+    localStorage.setItem("nivelUsuario", "admin"); // aqui salva o nível do usuário
     alert("Login realizado com sucesso!");
     navigate("/dashboard");
   } else if (user === "engenheiro_aero" && password === "123456") {

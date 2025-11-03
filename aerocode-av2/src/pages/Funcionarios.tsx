@@ -117,8 +117,7 @@ const Funcionarios: React.FC = () => {
               <div
                 key={funcionario.id}
                 className="funcionario-card"
-                onClick={() => setSelecionado(funcionario)}
-              >
+                onClick={() => setSelecionado(funcionario)}>
                 <p className="funcionario-nome">{funcionario.nome}</p>
                 <span className="funcionario-usuario">@{funcionario.usuario}</span>
               </div>

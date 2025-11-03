@@ -96,19 +96,14 @@
   transition: transform 0.15s, background-color 0.2s;
 }
 
-.modal-actions .btn:hover {
-  transform: translateY(-2px);
-}
-
 .modal-actions .btn.cadastrar,
 .modal-actions .btn.cancelar {
-  background-color: #363636;
+  background-color: #707070;
+  color: white;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding: 0.6rem 1rem;
   color: white;
   transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-.modal-actions .btn.cadastrar:hover,
-.modal-actions .btn.cancelar:hover {
-  background-color: #505050;
-  transform: translateY(-2px);
-}

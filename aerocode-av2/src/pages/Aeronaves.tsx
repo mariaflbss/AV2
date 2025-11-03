@@ -4,7 +4,7 @@ import Sidebar from "../components/Sidebar";
 import CadastrarAeronave from "../components/CadastrarAeronave";
 import "../Aeronaves.css";
 import { salvarDados, carregarDados } from "../utils/storage";
- 
+
 interface Aeronave {
   codigo: string;
   nome: string;
@@ -16,7 +16,7 @@ interface Aeronave {
   dataEntrega: string;
   imagem: string; 
 }
- 
+
 const Aeronaves: React.FC = () => {
   const [aeronaves, setAeronaves] = useState<Aeronave[]>(() => {
     const salvas = carregarDados<Aeronave[]>("aeronaves");
@@ -57,26 +57,35 @@ const Aeronaves: React.FC = () => {
       },
     ];
   });
- 
+
   const [pesquisa, setPesquisa] = useState("");
   const [selected, setSelected] = useState<Aeronave | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditando, setIsEditando] = useState(false);
   const navigate = useNavigate();
- 
+
   useEffect(() => {
     salvarDados("aeronaves", aeronaves);
   }, [aeronaves]);
- 
+
   const handleCadastrar = (novaAeronave: Aeronave) => {
     setAeronaves([...aeronaves, novaAeronave]);
   };
- 
+
+  const handleAtualizar = (atualizada: Aeronave) => {
+    setAeronaves((prev) =>
+      prev.map((a) => (a.codigo === atualizada.codigo ? atualizada : a))
+    );
+    setIsEditando(false);
+    setSelected(null);
+  };
+
   const irParaEtapas = () => navigate("/etapas");
- 
+
   const aeronavesFiltradas = aeronaves.filter((aeronave) =>
     aeronave.nome.toLowerCase().includes(pesquisa.toLowerCase())
   );
- 
+
   return (
     <div className="aeronaves-container">
       <Sidebar />
@@ -97,7 +106,7 @@ const Aeronaves: React.FC = () => {
             Etapas de Produção
           </button>
         </div>
- 
+
         <div className="aeronaves-list">
           {aeronavesFiltradas.length > 0 ? (
             aeronavesFiltradas.map((aeronave, index) => (
@@ -115,12 +124,12 @@ const Aeronaves: React.FC = () => {
             <p className="sem-resultados">Nenhuma aeronave encontrada</p>
           )}
         </div>
- 
+
         {selected && (
           <div className="modal">
             <div className="modal-content">
               <span className="close" onClick={() => setSelected(null)}>
-                &times;
+               ×
               </span>
               <h2>{selected.nome}</h2>
               <img src={selected.imagem} alt={selected.nome} className="modal-img" />
@@ -131,18 +140,48 @@ const Aeronaves: React.FC = () => {
               <p><strong>Alcance:</strong> {selected.alcance}</p>
               <p><strong>Cliente:</strong> {selected.cliente}</p>
               <p><strong>Data de Entrega:</strong> {selected.dataEntrega}</p>
+
+              <div className="modal-actions">
+                <button
+                  className="btn atualizar"
+                  onClick={() => {
+                    setIsEditando(true);
+                    setIsModalOpen(true);
+                  }}
+                >
+                  Atualizar
+                </button>
+                <button
+                  className="btn excluir"
+                  onClick={() => {
+                    if (window.confirm(`Deseja realmente excluir ${selected.nome}?`)) {
+                      setAeronaves((prev) =>
+                        prev.filter((a) => a.codigo !== selected.codigo)
+                      );
+                      setSelected(null);
+                    }
+                  }}
+                >
+                  Excluir
+                </button>
+              </div>
             </div>
           </div>
         )}
- 
+
         <CadastrarAeronave
           isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          onCadastrar={handleCadastrar}
+          onClose={() => {
+            setIsModalOpen(false);
+            setIsEditando(false);
+            setSelected(null);
+          }}
+          onCadastrar={isEditando ? handleAtualizar : handleCadastrar}
+          aeronave={isEditando ? selected : undefined}
         />
       </main>
     </div>
   );
 };
- 
+
 export default Aeronaves;
