@@ -8,15 +8,26 @@ const PaginaLogin: React.FC = () => {
   const [password, setPassword] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (user === "admin_aerocode" && password === "123456") {
-      alert("Login realizado com sucesso!");
-      navigate("/dashboard");
-    } else {
-      alert("Nome de usuário ou senha inválidos");
-    }
-  };
+  if (user === "admin_aerocode" && password === "123456") {
+    // salva o nível do usuário
+    localStorage.setItem("nivelUsuario", "admin");
+
+    alert("Login realizado com sucesso!");
+    navigate("/dashboard");
+  } else if (user === "engenheiro_aero" && password === "123456") {
+    localStorage.setItem("nivelUsuario", "engenheiro");
+    alert("Login realizado com sucesso!");
+    navigate("/dashboard");
+  } else if (user === "operador_aero" && password === "123456") {
+    localStorage.setItem("nivelUsuario", "operador");
+    alert("Login realizado com sucesso!");
+    navigate("/dashboard");
+  } else {
+    alert("Nome de usuário ou senha inválidos");
+  }
+};
 
   return (
     <div className="login-container">

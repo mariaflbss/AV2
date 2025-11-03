@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../Sidebar.css";
+import type { NivelUsuario } from "../utils/permissoes";
+import { podeAcessar } from "../utils/permissoes";
 
 interface MenuItem {
   label: string;
@@ -18,12 +20,19 @@ const menuItems: MenuItem[] = [
   { label: "Relatórios", path: "/relatorios", key: "relatorios", icon: "/imgRelatorio.png" },
 ];
 
-
 const SideBar: React.FC = () => {
-  const [active, setActive] = useState("aeronaves");
+  const [active, setActive] = useState("dashboard");
+  const [nivelUsuario, setNivelUsuario] = useState<NivelUsuario | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Pega o nível do usuário do localStorage
+  useEffect(() => {
+    const nivel = localStorage.getItem("nivelUsuario") as NivelUsuario | null;
+    setNivelUsuario(nivel ?? null);
+  }, []);
+
+  // Atualiza o item ativo
   useEffect(() => {
     const path = location.pathname;
     const current = menuItems.find((item) => path.includes(item.key));
@@ -34,6 +43,9 @@ const SideBar: React.FC = () => {
     setActive(key);
     navigate(path);
   };
+
+  // Filtra os itens visíveis de acordo com o nível do usuário
+  const itensVisiveis = menuItems.filter(item => nivelUsuario ? podeAcessar(nivelUsuario, item.label) : false);
 
   return (
     <aside className="sidebar">
@@ -52,7 +64,7 @@ const SideBar: React.FC = () => {
       </div>
 
       <nav className="menu">
-        {menuItems.map((item) => (
+        {itensVisiveis.map((item) => (
           <button
             key={item.key}
             className={`menu-item ${active === item.key ? "active" : ""}`}
