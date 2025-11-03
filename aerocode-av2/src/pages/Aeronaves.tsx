@@ -20,7 +20,7 @@ interface Aeronave {
 const Aeronaves: React.FC = () => {
   const [aeronaves, setAeronaves] = useState<Aeronave[]>(() => {
     const salvas = carregarDados<Aeronave[]>("aeronaves");
-    if (salvas && Array.isArray(salvas)) return salvas;
+    if (salvas && salvas.length > 0) return salvas;
     return [
       {
         codigo: "1234",
